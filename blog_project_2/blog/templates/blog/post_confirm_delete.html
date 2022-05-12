@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+{% block title %} Delete {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+
+  {% if user.id == post.author.id %}
+    <form action="" method="post">{% csrf_token %}
+      <p>Are you sure you want to delete "{{ object }}"?</p>
+      <input class='btn btn-danger' type="submit" value="Confirm" />
+      <a class='btn btn-primary' href="{% url 'post_detail' pk=post.id %}">Cancel</a>
+    </form>
+  {% else %}
+    <p>You are not allowed access to this page <a href="{% url 'login' %}" >Login </a> as page user to gain access...Thank You :)</p>
+  {% endif %}
+
+{% else %}
+  <p>You are not allowed access to this page <a href="{% url 'login' %}" >Login </a> to gain access...Thank You :)</p>
+
+{% endif %}
+{% endblock %}

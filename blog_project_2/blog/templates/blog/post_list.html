@@ -1,0 +1,49 @@
+{% extends 'blog/base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+
+
+{% for post in post_list %}
+
+<div class="card mb-1" style="max-width: 100%; background-color: #dbdddf;">
+    <div class="row g-0">
+
+        {% if post.image %}
+        <div class="col-md-4" >
+            <img src="{{ post.image.url }}" class="w-100 img-thumbnail img-fluid" style="height: 100%;"> 
+        </div>  
+        {% endif %} 
+        
+
+        <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'post_detail' pk=post.id %}"> {{ post.title }} </a>  
+            </h5>
+            <p class="card-text">
+                <small class="text-muted">               
+                    <p class="card-text">Category : <a class="" href="{% url 'category_view' post.category|slugify %}">{{ post.category }}</a></p>
+                    <p class="card-text">Authur : <a class="" href="{% url 'category_view' post.category|slugify %}">{{ post.author.username}}</a></p>               
+                </small>
+            </p>
+            <small class="text-muted">
+                <p class="card-text">
+                    {{ post.text|safe|slice:":150"}}
+                </p>....<a href="{% url 'post_detail' pk=post.id %}">see more</a>
+                <p class="card-text">Published on: {{ post.create_date|date:"D M Y"}}</p>
+            </small>
+            
+        </div>
+        </div>
+    </div>
+</div>
+     
+
+   
+{% endfor %}
+
+
+
+{% endblock %}
+
+

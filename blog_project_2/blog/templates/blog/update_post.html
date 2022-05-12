@@ -1,0 +1,24 @@
+{% extends 'blog/base.html' %}
+{% block title %} Edit Post {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
+        <h2>Edit Post</h2>
+        </br>
+        <form class="post-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            {{form.as_p}}
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    {% else %}
+        <p>You are not allowed access to this page <a href="{% url 'login' %}" >Login </a> as page user to gain access...Thank You :)</p>
+    {% endif %}
+{% else %}
+    <p>You are not allowed access to this page <a href="{% url 'login' %}" >Login </a> to gain access...Thank You :)</p>
+
+{% endif %}
+   
+    
+{% endblock %}
+<!--for the ckeditor to show, the safe is added-->

@@ -1,0 +1,67 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %} Home {% endblock %}
+{% block content %}
+
+
+<h1>User Profile...</h1>
+
+{{ page_user }}
+
+<div class="card mb-3" style="max-width: 100%;">
+    <div class="row g-0">
+        {% if page_user.profile_pic %}
+        
+            <div class="col-md-4">
+                <img src="{{ page_user.profile_pic.url }}" class="img-fluid rounded-start" alt="">
+            </div>
+ 
+        {% else %}
+            <div class="col-md-4">
+                <img src="{% static 'images/profile2.png' %}" class="img-fluid rounded-start" alt="...">
+            </div>
+        {% endif %}
+        <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ page_user.user.first_name}} 
+                {{ page_user.user.last_name}}
+            </h5>
+            <p class="card-text">
+                <small class="text-muted">
+
+                    {% if post.author.profile.website_url %}
+                        <a href="{{ page_user.profile.website_url }}">Website |</a>
+                    {% endif %}
+
+                    {% if post.author.profile.facebook_url %}
+                        <a href="{{ page_user.profile.facebook_url }}">Facebook | </a>
+                    {% endif %}
+
+                    {% if post.author.profile.twitter_url %}
+                        <a href="{{page_user.profile.twitter_url }}">Twitter | </a>
+                    {% endif %}
+
+                    {% if post.author.profile.instagram_url %}
+                        <a href="{{ page_user.profile.instagram_url }}">Instagram | </a>
+                    {% endif %}
+
+                    {% if post.author.profile.pintrest_url %}
+                        <a href="{{ page_user.profile.pintrest_url }}">Pintrest </a>
+                    {% endif %}
+
+                
+                
+                
+                
+                
+                </small></p>
+            <p class="card-text">
+                {{ page_user.bio }}
+            </p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

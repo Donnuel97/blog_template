@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block title %} Create New Blog Post {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+    {% if user.id == profile.user.id %}
+
+        <h1>Edit Profile</h1>
+        <form class="post-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {{form.as_p}}
+            <button type="submit" class="save btn btn-default">Update profile page</button>
+        </form>
+
+        <script>var editor = new MediumEditor('.editable');</script>
+        <!--this helps set the user name via value so u cant pose as someone else-->
+        <script>
+            var name = "{{ user.id }}";
+            document.getElementById("client").value = name;
+        </script>
+    {% else %}
+        <h3>You are not allowed here go back to <a class='nav-link' href="{% url 'login' %}" >Login</a> page</h3>
+    {% endif %}
+
+{% else %}
+    <h3>You are not the correct user, go back to <a class='nav-link' href="{% url 'login' %}" >Login</a> page</h3>
+{% endif %}
+{% endblock %}
+<!--for the ckeditor to show, the safe is added-->

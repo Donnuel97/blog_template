@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+{% block title %} {{ cats }} {% endblock %}
+
+{% block content %}
+{% if category_posts %}
+
+    {% for post in category_posts %}
+   
+    <div>
+                
+        <h4 class="my-4"><a class="nav-link" href="{% url 'post_detail' pk=post.id %}">{{ post.title }}</a></h4>
+            <p class="nav-link">category: <a class="" href="{% url 'category_view' post.category|slugify %}">{{ post.category }}</a></p>              
+            <p class="nav-link">Published on: {{ post.create_date|date:"D M Y"}}</p>
+            <p class="nav-link">{{ post.text|safe|linebreaksbr|slice:":100"}}....<a href="{% url 'post_detail' pk=post.id %}">see more</a></p>
+    </div> 
+    {% endfor %}
+{% else %}
+    <h2>Sorry this page does not exist...</h2>
+{% endif %}
+{% endblock %}

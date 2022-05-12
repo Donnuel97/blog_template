@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+{% block title %} Create New Profile {% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>New Profile</h1>
+    <form class="post-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        {{form.as_p}}
+        <button type="submit" class="save btn btn-default">Complete</button>
+    </form>
+
+    
+    <!--this helps set the user name via value so u cant pose as someone else-->
+    
+{% else %}
+    <h3>You are not allowed here go back to <a class='nav-link' href="{% url 'login' %}" >Login</a> page</h3>
+{% endif %}
+{% endblock %}
+<!--for the ckeditor to show, the safe is added-->

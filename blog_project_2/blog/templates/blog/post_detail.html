@@ -1,0 +1,140 @@
+
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %} {{ post.title }} {% endblock %}
+{% block content %}
+
+
+<h1 class='#'>{{ post.title }} </h1>
+<small>By:
+    {{ post.author.first_name }}
+    {{ post.author.last_name }},
+    {{ post.create_date }}
+</small>
+
+
+<div class="container">
+    <div class="row my-6"> 
+        {% if post.image %}
+        <div class="col-md-5" >
+            <img src="{{ post.image.url }}" class="w-100" > 
+        </div>  
+        {% endif %} 
+    </div>
+</div>                                  
+<br/><br/>
+<p class='postcontent' >{{ post.text|safe|linebreaksbr }}</p>
+<!--for the ckeditor to show, the safe is added-->
+
+{% if user.is_authenticated %}
+    {% if user.id == post.author.id %}
+        <a  href="{% url 'post_edit' post.pk %}">(Edit)</a> |
+        <a  href="{% url 'post_remove' post.pk %}">(Delete)</a> |
+    {% endif %}
+{% endif %}
+    <a  href="{% url 'post_list'%}">(Home)</a>
+
+    <br/><br/>
+    <hr>
+    <br/>
+    <form action="{% url 'like_post' post.pk %}" method="POST">
+    {% csrf_token %}
+        
+    {% if user.is_authenticated %}
+        {% if liked %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger btn-sm">Unlike</button> 
+        {% else %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">Like</button> 
+
+        {% endif %}
+    {% else %}
+            <small><p><a  href="{% url 'login' %}" >Login</a>  to Like</p></small>
+    {% endif %}
+    - {{ total_likes }} Likes      
+    </form> 
+
+<br/><br/>
+
+<div class="card mb-3" style="max-width: 100%;">
+    <div class="row g-0">
+
+        {% if post.author.profile.profile_pic %}
+        
+            <div class="col-md-4">
+                <img src="{{ post.author.profile.profile_pic.url }}" class="img-fluid rounded-start" alt="">
+            </div>
+     
+        {% else %}
+            <div class="col-md-4">
+                <img src="{% static 'images/profile2.png' %}" class="w-100 img-thumbnail img-fluid" style="height: 100%;">
+            </div>
+        {% endif %}
+        
+
+        <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'show_profile_page' post.author.profile.id %}"> {{ post.author.username}} </a>  
+            </h5>
+            <p class="card-text">
+                <small class="text-muted">
+
+                    {% if post.author.profile.website_url %}
+                        <a href="{{ post.author.profile.website_url }}">Website |</a>
+                    {% endif %}
+
+                    {% if post.author.profile.facebook_url %}
+                        <a href="{{ post.author.profile.facebook_url }}">Facebook | </a>
+                    {% endif %}
+
+                    {% if post.author.profile.twitter_url %}
+                        <a href="{{ post.author.profile.twitter_url }}">Twitter | </a>
+                    {% endif %}
+
+                    {% if post.author.profile.instagram_url %}
+                        <a href="{{ post.author.profile.instagram_url }}">Instagram | </a>
+                    {% endif %}
+
+                    {% if post.author.profile.pintrest_url %}
+                        <a href="{{ post.author.profile.pintrest_url }}">Pintrest </a>
+                    {% endif %}
+
+                
+                
+                
+                
+                
+                </small></p>
+            <p class="card-text">
+                {{ post.author.profile.bio }}
+            </p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+        </div>
+    </div>
+</div>
+<hr>
+<br/>
+<h2>Comments...</h2> 
+<br/>
+{% if not post.comments.all %}   
+    No Comments Yet...<a href="{% url 'add_comment' post.pk %}">Add One</a>
+{% else %}
+<a href="{% url 'add_comment' post.pk %}">Add comments</a>
+<br/><br/>
+    {% for comment in post.comments.all %}
+        <strong>
+            {{ comment.author }}
+            {{ comment.create_date }}
+        </strong>
+        <br/>
+        {{ comment.text | safe }}
+        <br/><br/>
+        <hr>
+    {% endfor %}
+{% endif %}
+<br/>
+
+<br/><br/>
+{% endblock %}
+
